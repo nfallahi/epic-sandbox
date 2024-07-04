@@ -1,4 +1,4 @@
-# epic-sandbox
+# Epic Sandbox
 Testing standalone and EHR launch for epic app on vendor services. 
 
 This is a POC of a health app working through both EHR and sandalone launch 
