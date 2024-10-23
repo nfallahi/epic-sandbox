@@ -11,109 +11,14 @@ export default NextAuth({
       type: "oauth",
       authorization: {
         url: "https://vendorservices.epic.com/interconnect-amcurprd-oauth/oauth2/authorize",
-        params: { scope: "PATIENT.READ" },
+        params: { scope: "openid fhirUser" },
       },
       // @ts-expect-error
       headers: {
-        Authorization: `Basic ${Buffer.from(
-          `${process.env.EPIC_MYCHART_CLIENT_ID as string}:${
-            process.env.EPIC_MYCHART_CLIENT_SECRET as string
-          }`
-        ).toString("base64")}`,
+        Authorization: `Basic MWU3OWM3MTItOGU0NS00ODZkLWEwYjItNzk3YTg4NjUwMDVjOk9SQWhkZHNBYTYraWoyMUFDL2NHMHU3Z3RObXA3WCt0QmlBSlZtcHpyMVFYZTlmQ3piSWhZQ3ZJVCtjdTVqZWdhZEo3TnB0aWMzTGpxWkFBeitWdTV3PT0=`,
       },
       token: "https://vendorservices.epic.com/interconnect-amcurprd-oauth/oauth2/token",
-      userinfo: {
-        url: "https://vendorservices.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4/Patient",
-        async request({ tokens, provider }) {
-          const url = new URL(
-            `https://vendorservices.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4/Patient/${tokens.patient}`
-          );
-          // @ts-ignore
-          return fetch(url, {
-            headers: {
-              "Content-Type": "application/fhir+json",
-              Accept: "application/json",
-              Authorization: `Bearer ${tokens.access_token}`,
-            },
-          }).then((res) => res.json());
-        },
-      },
-      clientId: process.env.EPIC_MYCHART_CLIENT_ID as string,
-      clientSecret: process.env.EPIC_MYCHART_CLIENT_SECRET as string,
-      profile(profile) {
-        return {
-          id: profile.id,
-          name: profile.name.find((i: any) => i.use === "official")?.text,
-          email: profile.telecom.find((i: any) => i.system === "email")?.value,
-          image: null,
-        };
-      },
-    },
-    {
-      id: "epic-mychart-launch",
-      name: "Epic MyChart Launch Clinician",
-      type: "oauth",
-      authorization: {
-        url: "https://vendorservices.epic.com/interconnect-amcurprd-oauth/oauth2/authorize",
-        params: { scope: "launch" },
-      },
-      // @ts-expect-error
-      headers: {
-        Authorization: `Basic ${Buffer.from(
-          `${process.env.EPIC_MYCHART_CLIENT_ID_LAUNCH as string}:${
-            process.env.EPIC_MYCHART_CLIENT_SECRET_LAUNCH as string
-          }`
-        ).toString("base64")}`,
-      },
-      token: {
-        url: "https://vendorservices.epic.com/interconnect-amcurprd-oauth/oauth2/token",
-      },
-      userinfo: {
-        url: "https://vendorservices.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4/Patient",
-        async request({ tokens, provider }) {
-          const url = new URL(
-            `https://vendorservices.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4/Patient/${tokens.patient}`
-          );
-          // @ts-ignore
-          return fetch(url, {
-            headers: {
-              "Content-Type": "application/fhir+json",
-              Accept: "application/json",
-              Authorization: `Bearer ${tokens.access_token}`,
-            },
-          }).then((res) => res.json());
-        },
-      },
-      clientId: process.env.EPIC_MYCHART_CLIENT_ID_LAUNCH as string,
-      clientSecret: process.env.EPIC_MYCHART_CLIENT_SECRET_LAUNCH as string,
-      profile(profile) {
-        return {
-          id: profile.id,
-          name: profile.name.find((i: any) => i.use === "official")?.text,
-          email: profile.telecom.find((i: any) => i.system === "email")?.value,
-          image: null,
-        };
-      },
-    },
-    {
-      id: "epic-mychart-launch-patient",
-      name: "Epic MyChart Launch Patient",
-      type: "oauth",
-      authorization: {
-        url: "https://vendorservices.epic.com/interconnect-amcurprd-oauth/oauth2/authorize",
-        params: { scope: "launch" },
-      },
-      // @ts-expect-error
-      headers: {
-        Authorization: `Basic ${Buffer.from(
-          `${process.env.EPIC_MYCHART_CLIENT_ID as string}:${
-            process.env.EPIC_MYCHART_CLIENT_SECRET as string
-          }`
-        ).toString("base64")}`,
-      },
-      token: {
-        url: "https://vendorservices.epic.com/interconnect-amcurprd-oauth/oauth2/token",
-      },
+      issuer: "https://vendorservices.epic.com/interconnect-amcurprd-oauth/oauth2",  // Set the correct issuer
       userinfo: {
         url: "https://vendorservices.epic.com/interconnect-amcurprd-oauth/api/FHIR/R4/Patient",
         async request({ tokens, provider }) {

@@ -50,6 +50,20 @@ const generateSamlRequest = () => {
     return signedXml.getSignedXml();
 };
 
+const initiateEpicAuth = () => {
+    const clientId = '1e79c712-8e45-486d-a0b2-797a8865005c'
+    const redirectUri = encodeURIComponent('http://localhost:3000/callback'); // Replace with your registered redirect URI
+    const state = Math.random().toString(36).substring(2); // Generate a random state
+    const scope = encodeURIComponent('openid fhirUser Patient.read'); // Add scopes as required
+    const aud = encodeURIComponent('https://vendorservices.epic.com/interconnect-amcurprd-oauth'); // Epic FHIR base URL
+
+    const authorizationUrl = `https://vendorservices.epic.com/interconnect-amcurprd-oauth/oauth2/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}&scope=${scope}&aud=${aud}`;
+
+    // Redirect user to the authorization URL
+    window.location.href = authorizationUrl;
+};
+
+
 // Your Next.js component
 export default function Home() {
     const { data, status } = useSession()
@@ -122,7 +136,7 @@ export default function Home() {
                         <Text className="text-lg my-3">Please login using Epic MyChart credentials. Click <Link target='_blank' href="https://fhir.epic.com/Documentation?docId=testpatients">
                             here
                         </Link> to access Epic MyChart Sandbox test data.</Text>
-                        <Button size="lg" onClick={() => signIn('epic-mychart')}>
+                        <Button size="lg" onClick={initiateEpicAuth}>
                             Sign in with Epic MyChart
                         </Button>
                     </section>

@@ -1,7 +1,6 @@
 import fetch from 'isomorphic-unfetch';
 
 export default async function callback(req, res) {
-    console.log("HERE");
     if (req.method === 'GET') {
         const { code } = req.query;
 
