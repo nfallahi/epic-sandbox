@@ -6,7 +6,7 @@ export default async function callback(req, res) {
 
         // Replace with your actual client credentials and endpoint
         const tokenEndpoint = 'https://vendorservices.epic.com/interconnect-amcurprd-oauth/oauth2/token';
-        const clientId = process.env.EPIC_MYCHART_CLIENT_ID;;
+        const clientId = process.env.EPIC_MYCHART_CLIENT_ID;
         const clientSecret = process.env.EPIC_MYCHART_CLIENT_SECRET;
         const redirectUri = 'http://localhost:3000/callback';
 
